@@ -306,11 +306,11 @@ h1{
 .tl-state .pdot{width:7px;height:7px;border-radius:50%;background:var(--a1);animation:pulse 1.4s infinite}
 .tl-state.paused .pdot{background:#fbbf24;animation:none}
 
-.tl-right{position:relative;overflow:hidden}
+.tl-right{position:relative;overflow:hidden;touch-action:none}
 .ruler{
   position:absolute;top:0;left:0;right:0;height:20px;border-bottom:1px solid var(--line);
   background:repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 60px);
-  cursor:ew-resize;
+  cursor:ew-resize;touch-action:none;
 }
 .ruler::after{
   content:"";position:absolute;inset:0;
@@ -319,7 +319,7 @@ h1{
 .tracks{position:absolute;top:20px;left:0;right:0;bottom:0}
 .track{
   position:relative;height:33.33%;border-bottom:1px solid rgba(255,255,255,.04);
-  cursor:ew-resize;
+  cursor:ew-resize;touch-action:none;
 }
 .clip{
   position:absolute;top:5px;bottom:5px;border-radius:5px;
@@ -426,7 +426,7 @@ h1{
   .ctas{margin-top:28px}
   .stats{margin-top:30px}
 }
-@media (max-width:400px){
+@media (max-width:480px){
   nav{padding:16px 14px;gap:8px}
   .logo{font-size:12px}
   .logo > span{display:none}   /* drop the (R) — saves 29px, nav fits 390px */
@@ -434,6 +434,8 @@ h1{
   .sfx-btn{width:26px;height:26px}
   .sfx-btn svg{width:11px;height:11px}
   .burger{width:36px;height:36px;padding:8px 9px}
+}
+@media (max-width:400px){
   .timeline{grid-template-columns:104px 1fr}
   .tl-left{padding:10px 10px}
   .timecode{font-size:11px;letter-spacing:.02em}
