@@ -67,7 +67,7 @@
   /* ============================================================
      Project data + procedural frame artwork
   ============================================================ */
-  const projects = [
+  let projects = [
     { t: 'NEON DISTRICT', c: 'Title Sequence',      y: 2026, m: 'Edit + Motion',      g: [A1, A2] },
     { t: 'ECHO/ES',       c: 'Music Visual',        y: 2025, m: 'Direction + Edit',   g: [A2, A3] },
     { t: 'KYOTO DRIFT',   c: 'Brand Film',          y: 2025, m: 'Edit + Grade',       g: ['#ffcf6b', A1] },
@@ -77,6 +77,21 @@
     { t: 'AFTERGLOW',     c: 'Documentary Titles',  y: 2022, m: 'Titles + Edit',      g: [A2, A1] },
     { t: 'VELOCITY',      c: 'Sports Promo',        y: 2022, m: 'Edit + Sound',       g: [A3, A1] },
   ];
+  /* live source: Supabase `projects` table (edit like a spreadsheet).
+     On any failure — offline, empty table, CMS down — the built-in
+     list above stays, so the page never breaks. */
+  try {
+    const rows = await window.CMS.projects();
+    if (Array.isArray(rows) && rows.length) {
+      projects = rows.map(r => ({
+        t: r.title,
+        c: r.client,
+        y: r.year,
+        m: r.meta,
+        g: Array.isArray(r.colors) && r.colors.length ? r.colors : [A1, A2],
+      }));
+    }
+  } catch (e) { /* fallback stays */ }
   const N = projects.length, STEP = Math.PI * 2 / N, R = 3.15;
 
   function hexA(h, a) {
