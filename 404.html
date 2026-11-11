@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Signal Lost — Aabir Ahammed</title>
+  <meta name="description" content="Page not found — head back to the timeline." />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#0a0a10" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff3d81'/%3E%3Cpath d='M13 10l10 6-10 6z' fill='%23fff'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/shared.css" />
+  <style>
+    body{background:#0a0a10;overflow:hidden}
+    .nf-wrap{
+      position:fixed;inset:0;z-index:2;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;padding:24px;gap:8px;
+    }
+    .nf-code{
+      font-family:'Syne',sans-serif;font-weight:800;
+      font-size:clamp(88px,24vw,220px);line-height:.9;letter-spacing:-.02em;
+      color:var(--ink);
+    }
+    .nf-code em{
+      font-style:normal;
+      background:linear-gradient(90deg,#ff3d81,#8b5cf6,#22d3ee);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .nf-msg{
+      font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--muted);
+    }
+    .nf-sub{max-width:420px;color:var(--muted);font-size:15px;line-height:1.6;margin:10px 0 26px}
+    .nf-ctas{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+    .nf-back{
+      position:fixed;top:20px;left:24px;z-index:3;
+      font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--ink);
+      border:1px solid var(--line);border-radius:99px;padding:10px 18px;
+      background:rgba(10,10,16,.6);transition:border-color .2s,transform .2s;
+    }
+    .nf-back:hover{border-color:var(--a1);transform:translateX(-2px)}
+    .nf-tc{
+      position:fixed;bottom:24px;left:24px;z-index:3;
+      font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.03em;color:var(--a1);
+    }
+    .nf-glitch{animation:nfFlicker 3.4s steps(1) infinite}
+    @keyframes nfFlicker{
+      0%,93%,100%{opacity:1}
+      94%{opacity:.35}
+      95%{opacity:1}
+      96.5%{opacity:.5}
+      97%{opacity:1}
+    }
+    @media (max-width:900px){
+      .nf-back{top:16px;left:16px}
+    }
+  </style>
+</head>
+<body data-page="404">
+  <div class="vignette"></div>
+  <div class="grain"></div>
+
+  <a class="nf-back" href="index.html">← Back to timeline</a>
+
+  <main class="nf-wrap">
+    <div class="nf-code nf-glitch">4<em>0</em>4</div>
+    <div class="nf-msg">SIGNAL LOST — CLIP NOT FOUND</div>
+    <p class="nf-sub">This frame isn't on the timeline. It was probably cut in the edit — happens to the best of us.</p>
+    <div class="nf-ctas">
+      <a class="btn-primary" href="index.html"><span class="tri"></span>Back to home</a>
+      <a class="btn-ghost" href="work.html">Explore work →</a>
+    </div>
+  </main>
+
+  <div class="nf-tc" aria-hidden="true">00:00:40:04 — REC<span style="color:#ff3d5e"> ●</span></div>
+</body>
+</html>

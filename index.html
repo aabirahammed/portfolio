@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AABIR AHAMMED — Motion Designer & Video Editor</title>
+<meta name="description" content="Aabir Ahammed — motion designer & video editor. Kinetic identities, title sequences, brand films and music visuals for studios and artists worldwide." />
+<meta name="theme-color" content="#0a0a10" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="AABIR AHAMMED — Motion Designer & Video Editor" />
+<meta property="og:description" content="Kinetic identities, title sequences, brand films and music visuals." />
+<meta property="og:image" content="og-cover.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff3d81'/%3E%3Cpath d='M13 10l10 6-10 6z' fill='%23fff'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/shared.css" />
+<style>
+  /* ---- Home page only ---- */
+  .hero-content{justify-content:space-between;padding:118px 40px 104px}
+  /* h1 sized by width AND height so it always stays 2 lines and the stats stay on screen */
+  .hero-content h1{font-size:clamp(34px, min(7.6vw, 11.5vh), 118px)}
+  /* bottom connect strip — fills the space below the counters */
+  .connect{display:flex;align-items:center;gap:14px;opacity:0;animation:fadeUp .8s ease 1s forwards}
+  .connect-socials{display:flex;gap:8px}
+  .connect-socials a{
+    width:30px;height:30px;border:1px solid var(--line);border-radius:50%;
+    display:grid;place-items:center;color:var(--muted);
+    transition:color .2s,border-color .2s,box-shadow .2s;
+  }
+  .connect-socials a:hover{color:var(--ink);border-color:var(--a1);box-shadow:0 0 14px rgba(var(--a1-rgb),.25)}
+  .connect-socials svg{width:14px;height:14px}
+  .connect-mail{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--muted);transition:color .2s}
+  .connect-mail:hover{color:var(--a2)}
+  /* click-RPM counter — sits in the connect strip (bottom-left desktop) */
+  .rpm-pill{
+    display:flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;
+    padding:7px 13px;border:1px solid var(--line);border-radius:99px;
+    background:rgba(10,10,16,.55);backdrop-filter:blur(8px);
+    pointer-events:none;
+  }
+  .rpm-lamp{
+    width:7px;height:7px;border-radius:50%;flex:none;
+    background:#ff3d5e;box-shadow:0 0 6px rgba(255,61,94,.8);
+    transition:background .15s,box-shadow .15s;
+  }
+  .rpm-val{font-size:13px;font-weight:700;color:var(--ink);min-width:30px;text-align:right;font-variant-numeric:tabular-nums}
+  .rpm-lbl{font-size:9px;letter-spacing:.16em;color:var(--muted);white-space:nowrap}
+  /* mobile variant (in the connect strip, above the socials) */
+  .rpm-m{display:none}
+  .hints{right:56px}
+  .role-spin{
+    display:inline-block;min-width:12.4em;
+    color:var(--ink);font-weight:600;
+    transition:opacity .28s ease, transform .28s ease;
+  }
+  .role-spin.out{opacity:0;transform:translateY(6px)}
+
+  /* marquee ticker */
+  .ticker{
+    position:fixed;top:72px;left:0;right:0;z-index:15;height:34px;
+    display:flex;align-items:center;overflow:hidden;
+    border-block:1px solid var(--line);
+    background:rgba(7,7,12,.55);backdrop-filter:blur(6px);
+  }
+  .ticker-track{display:flex;align-items:center;white-space:nowrap;animation:tick 30s linear infinite;will-change:transform}
+  .ticker:hover .ticker-track{animation-play-state:paused}
+  .ticker-track span{font-family:'Syne',sans-serif;font-weight:700;font-size:11.5px;letter-spacing:.24em;color:var(--muted);padding:0 20px}
+  .ticker-track span.hi{color:var(--a1)}
+  .ticker-track i{color:var(--a2);font-style:normal;font-size:10px}
+  @keyframes tick{to{transform:translateX(-50%)}}
+
+  /* viewfinder corners */
+  .corners i{position:fixed;z-index:15;width:20px;height:20px;border:2px solid rgba(var(--a1-rgb),.45);pointer-events:none}
+  .cnr-tl{top:118px;left:20px;border-right:none;border-bottom:none}
+  .cnr-tr{top:118px;right:20px;border-left:none;border-bottom:none}
+  .cnr-bl{bottom:104px;left:20px;border-right:none;border-top:none}
+  .cnr-br{bottom:104px;right:20px;border-left:none;border-top:none}
+  @media (max-width:900px){
+    .hero-content{padding:112px 22px 104px}
+    .stats{gap:24px;margin-top:0}
+    .hero-content h1{font-size:clamp(30px, min(8.8vw, 11.5vh), 118px)}
+    .connect{flex-wrap:wrap;justify-content:center;gap:10px}
+    /* mobile: counter moves into the connect strip, above the social icons */
+    .rpm-d{display:none}
+    .connect .rpm-m{
+      display:flex;
+      flex-basis:100%;       /* forces its own row above the socials */
+      max-width:max-content; /* …but keeps its own pill width, centered */
+      padding:4px 10px;gap:6px;
+    }
+    .connect .rpm-m .rpm-val{font-size:11.5px;min-width:26px}
+    .connect .rpm-m .rpm-lbl{font-size:8px}
+    .cnr-tl,.cnr-tr{top:112px}
+  }
+  @media (max-width:400px){
+    .hero-content h1{font-size:28px}
+  }
+</style>
+</head>
+<body data-page="home" data-edit-dur="12">
+
+  <div id="stage"></div>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+
+  <nav>
+    <a class="logo" href="index.html"><span class="mark"></span>AABIR&nbsp;AHAMMED<span style="color:var(--a1)">®</span></a>
+    <div class="nav-links">
+      <a href="work.html">Work</a><a href="reel.html">Reel</a><a href="about.html">About</a><a href="services.html">Services</a>
+    </div>
+    <div class="nav-right">
+      <div class="socials">
+        <a href="https://www.behance.net/aabirahammed" target="_blank" rel="noopener" aria-label="Behance" title="Behance">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8.84 10.83H6.9V8.86h1.94c.63 0 1.14.44 1.14.99 0 .54-.51.98-1.14.98Zm0 4.3H6.9v-2.2h1.94c.68 0 1.24.5 1.24 1.1s-.56 1.1-1.24 1.1ZM9.9 5.5H4.4v13h5.6c2.4 0 4.3-1.9 4.3-4.3 0-1.3-.6-2.5-1.5-3.3.6-.7 1-1.7 1-2.6 0-2.1-1.7-3.8-3.9-3.8Zm9.7 3.9c-2.5 0-4.5 2-4.5 4.5s2 4.5 4.5 4.5c1.9 0 3.5-1.2 4.2-2.9h-2.5c-.3.6-1 1-1.7 1-1 0-1.8-.7-2-1.6h6.4v-1c0-2.5-2-4.5-4.4-4.5Zm-2.1 3.5c.2-.9 1-1.6 2.1-1.6 1 0 1.9.7 2.1 1.6h-4.2Zm4.4-5.3h-5.3V5.7h5.3v1.9Z"/></svg>
+        </a>
+        <a href="https://facebook.com/This.is.Aabir" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/this.is.aabir" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@AabirAhammed" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/thisisaabir" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://x.com/ThisIsAabir" target="_blank" rel="noopener" aria-label="X (Twitter)" title="X (Twitter)">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644Z"/></svg>
+        </a>
+      </div>
+      <button class="sfx-btn" id="sfxBtn" aria-label="Interaction sounds on" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path class="w" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="w" d="M18.8 5.2a9.5 9.5 0 0 1 0 13.6"/><line class="x" x1="21" y1="3" x2="3" y2="21"/></svg></button>
+      <a class="nav-cta" href="mailto:ahammedaabir@gmail.com?subject=Project%20Inquiry%20—%20Motion%20Design">Let's talk</a>
+      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mm-back" type="button">← Back</button>
+    <a class="mm-link active" href="index.html">Home</a>
+    <a class="mm-link" href="work.html">Work</a>
+    <a class="mm-link" href="reel.html">Reel</a>
+    <a class="mm-link" href="about.html">About</a>
+    <a class="mm-link" href="services.html">Services</a>
+    <div class="mm-socials">
+      <a href="https://www.behance.net/aabirahammed" target="_blank" rel="noopener" aria-label="Behance"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8.84 10.83H6.9V8.86h1.94c.63 0 1.14.44 1.14.99 0 .54-.51.98-1.14.98Zm0 4.3H6.9v-2.2h1.94c.68 0 1.24.5 1.24 1.1s-.56 1.1-1.24 1.1ZM9.9 5.5H4.4v13h5.6c2.4 0 4.3-1.9 4.3-4.3 0-1.3-.6-2.5-1.5-3.3.6-.7 1-1.7 1-2.6 0-2.1-1.7-3.8-3.9-3.8Zm9.7 3.9c-2.5 0-4.5 2-4.5 4.5s2 4.5 4.5 4.5c1.9 0 3.5-1.2 4.2-2.9h-2.5c-.3.6-1 1-1.7 1-1 0-1.8-.7-2-1.6h6.4v-1c0-2.5-2-4.5-4.4-4.5Zm-2.1 3.5c.2-.9 1-1.6 2.1-1.6 1 0 1.9.7 2.1 1.6h-4.2Zm4.4-5.3h-5.3V5.7h5.3v1.9Z"/></svg></a>
+      <a href="https://facebook.com/This.is.Aabir" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://www.instagram.com/this.is.aabir" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
+      <a href="https://www.youtube.com/@AabirAhammed" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg></a>
+      <a href="https://www.linkedin.com/in/thisisaabir" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
+      <a href="https://x.com/ThisIsAabir" target="_blank" rel="noopener" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644Z"/></svg></a>
+    </div>
+    <a class="mm-mail" href="mailto:ahammedaabir@gmail.com">ahammedaabir@gmail.com</a>
+  </div>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>MOTION DESIGN</span><i>✦</i><span>VIDEO EDITING</span><i>✦</i><span>COLOR GRADE</span><i>✦</i><span>SOUND DESIGN</span><i>✦</i><span>TITLE SEQUENCES</span><i>✦</i><span>BRAND FILMS</span><i>✦</i><span class="hi">4K · 24FPS · REC709</span><i>✦</i><span class="hi">OPEN FOR FREELANCE</span><i>✦</i>
+      <span>MOTION DESIGN</span><i>✦</i><span>VIDEO EDITING</span><i>✦</i><span>COLOR GRADE</span><i>✦</i><span>SOUND DESIGN</span><i>✦</i><span>TITLE SEQUENCES</span><i>✦</i><span>BRAND FILMS</span><i>✦</i><span class="hi">4K · 24FPS · REC709</span><i>✦</i><span class="hi">OPEN FOR FREELANCE</span><i>✦</i>
+    </div>
+  </div>
+  <div class="corners" aria-hidden="true"><i class="cnr-tl"></i><i class="cnr-tr"></i><i class="cnr-bl"></i><i class="cnr-br"></i></div>
+
+  <section class="hero-content">
+    <div class="hero-top">
+      <div class="eyebrow"><span class="dot"></span>Available for new projects — <span class="role-spin" id="roleSpin">motion designer</span></div>
+      <h1>
+        <span class="line"><span>Motion is</span></span>
+        <span class="line"><span class="grad">the message.</span></span>
+      </h1>
+      <p class="sub">
+        I'm <strong>Aabir Ahammed</strong> — I design kinetic identities and cut stories that move.
+        8 years of title sequences, brand films and music visuals for studios and artists worldwide.
+      </p>
+      <div class="ctas">
+        <a class="btn-primary" href="reel.html"><span class="tri"></span>Watch the reel</a>
+        <a class="btn-ghost" href="work.html">Explore work →</a>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num" id="n1">200+</div><div class="lbl">Projects</div></div>
+      <div class="stat"><div class="num" id="n2">40M</div><div class="lbl">Views driven</div></div>
+      <div class="stat"><div class="num" id="n3">12</div><div class="lbl">Awards</div></div>
+    </div>
+    <div class="connect">
+      <div class="rpm-pill rpm-m" aria-hidden="true">
+        <span class="rpm-lamp"></span>
+        <span class="rpm-val">0</span>
+        <span class="rpm-lbl">CLICK&nbsp;RPM</span>
+      </div>
+      <div class="connect-socials">
+        <a href="https://www.behance.net/aabirahammed" target="_blank" rel="noopener" aria-label="Behance"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8.84 10.83H6.9V8.86h1.94c.63 0 1.14.44 1.14.99 0 .54-.51.98-1.14.98Zm0 4.3H6.9v-2.2h1.94c.68 0 1.24.5 1.24 1.1s-.56 1.1-1.24 1.1ZM9.9 5.5H4.4v13h5.6c2.4 0 4.3-1.9 4.3-4.3 0-1.3-.6-2.5-1.5-3.3.6-.7 1-1.7 1-2.6 0-2.1-1.7-3.8-3.9-3.8Zm9.7 3.9c-2.5 0-4.5 2-4.5 4.5s2 4.5 4.5 4.5c1.9 0 3.5-1.2 4.2-2.9h-2.5c-.3.6-1 1-1.7 1-1 0-1.8-.7-2-1.6h6.4v-1c0-2.5-2-4.5-4.4-4.5Zm-2.1 3.5c.2-.9 1-1.6 2.1-1.6 1 0 1.9.7 2.1 1.6h-4.2Zm4.4-5.3h-5.3V5.7h5.3v1.9Z"/></svg></a>
+        <a href="https://facebook.com/This.is.Aabir" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="https://www.instagram.com/this.is.aabir" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
+        <a href="https://www.youtube.com/@AabirAhammed" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg></a>
+        <a href="https://www.linkedin.com/in/thisisaabir" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a href="https://x.com/ThisIsAabir" target="_blank" rel="noopener" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644Z"/></svg></a>
+      </div>
+      <a class="connect-mail" href="mailto:ahammedaabir@gmail.com">ahammedaabir@gmail.com</a>
+    </div>
+  </section>
+
+  <div class="hints">
+    <span class="hint"><b>Drag</b> scene to orbit</span>
+    <span class="hint"><b>Click</b> to pulse</span>
+    <span class="hint"><b>Space</b> play / pause</span>
+    <div class="rpm-pill rpm-d" aria-hidden="true">
+      <span class="rpm-lamp"></span>
+      <span class="rpm-val">0</span>
+      <span class="rpm-lbl">CLICK&nbsp;RPM</span>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="tl-left">
+      <div class="timecode" id="tc">00:00:00:00</div>
+      <div class="tl-state" id="tlState"><span class="pdot"></span><span id="tlStateTxt">Playing</span></div>
+    </div>
+    <div class="tl-right" id="tlScrub">
+      <div class="ruler"></div>
+      <div class="tracks">
+        <div class="track">
+          <div class="clip v2" style="left:18%;width:36%">TITLE_SEQ_v4_final_FINAL.mp4</div>
+          <div class="clip v2b" style="left:60%;width:28%">BRAND_FILM_60s</div>
+        </div>
+        <div class="track">
+          <div class="clip v1" style="top:6px;bottom:6px">MASTER_TIMELINE — 4K · 24FPS · REC709</div>
+        </div>
+        <div class="track">
+          <div class="wave"></div>
+          <span class="kf" style="left:8%"></span>
+          <span class="kf" style="left:26%"></span>
+          <span class="kf" style="left:47%"></span>
+          <span class="kf" style="left:66%"></span>
+          <span class="kf" style="left:84%"></span>
+          <span class="kf" style="left:95%"></span>
+        </div>
+        <div class="playhead" id="playhead"></div>
+      </div>
+    </div>
+  </div>
+
+<script src="js/sound.js" defer></script>
+<script src="js/timeline.js" defer></script>
+<script src="js/hero-scene.js" defer></script>
+</body>
+</html>
