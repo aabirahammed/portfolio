@@ -134,6 +134,8 @@
       const val = rich ? clean(v) : v;
       for (const el of els) el[rich ? 'innerHTML' : 'textContent'] = val;
     }
+    /* values are in place (or DB unreachable → built-in text) — reveal */
+    document.documentElement.classList.remove('cms-boot');
     return window.CMS_CONTENT;
   })();
 

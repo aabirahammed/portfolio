@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
+<script>
+/* hide CMS-driven text until content.js applies DB values — prevents the
+   "old text flashes before new text" swap. Safety reveal after 2.5s so a
+   stalled network can never leave the page blank. */
+document.documentElement.classList.add('cms-boot');
+setTimeout(function(){document.documentElement.classList.remove('cms-boot')},2500);
+</script>
+<style>html.cms-boot [data-cms]{visibility:hidden}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Services — Aabir Ahammed</title>
 <meta name="description" content="Services by Aabir Ahammed — motion design, video editing, color grade and sound design." />
