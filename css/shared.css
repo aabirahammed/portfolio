@@ -39,6 +39,11 @@ body[data-page="services"]{
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
+
+/* CMS text fields soft-reveal when the boot veil (set in each page's
+   <head>) lifts — values fade in instead of popping. Elements that run
+   their own opacity animation are unaffected (animations override this). */
+[data-cms]{transition:opacity .45s ease}
 html{
   height:100%;
   /* kill Chrome Android "font boosting" — it inflates sizes and breaks the h1 fit */
