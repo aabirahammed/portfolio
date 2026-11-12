@@ -102,10 +102,20 @@
       padding:9px 20px;cursor:pointer;transition:color .2s,border-color .2s,background .2s}
     .tab.active{color:#0b0b12;background:linear-gradient(90deg,var(--a1),var(--a2));border-color:transparent}
     .tab:not(.active):hover{color:var(--ink);border-color:var(--a2)}
-    .group{margin:26px 0 10px}
+    .pgtabs{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 16px}
+    .pgtab{position:relative;border:1px solid var(--line);background:transparent;color:var(--muted);
+      border-radius:20px;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;letter-spacing:.09em;
+      padding:8px 18px;cursor:pointer;transition:color .2s,border-color .2s,background .2s}
+    .pgtab.active{color:#0b0b12;background:linear-gradient(90deg,var(--a1),var(--a2));border-color:transparent}
+    .pgtab:not(.active):hover{color:var(--ink);border-color:var(--a2)}
+    .pgtab .nd{display:none;width:7px;height:7px;border-radius:50%;background:var(--a1);
+      position:absolute;top:-2px;right:-2px;box-shadow:0 0 6px rgba(255,61,129,.8)}
+    .pgtab.has-dirty .nd{display:block}
+    .group{margin:22px 0 10px}
     .group:first-child{margin-top:0}
     .group h3{font-family:'Syne',sans-serif;font-weight:800;font-size:12px;letter-spacing:.16em;
       color:var(--a2);display:flex;align-items:center;gap:10px}
+    .group h3 .gcount{font-size:10px;color:var(--muted);letter-spacing:.08em;font-weight:600}
     .group h3::after{content:"";flex:1;height:1px;background:var(--line)}
     .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-top:12px}
     .cfield{display:flex;flex-direction:column;gap:4px}
@@ -176,8 +186,9 @@
         <div class="cbar">
           <button class="btn primary" id="saveContentBtn" type="button" disabled>Save content</button>
           <button class="btn" id="reloadContentBtn" type="button">↻ Reload</button>
-          <span class="chint">Site text for every page. <b>Empty a field</b> to fall back to the built-in wording.</span>
+          <span class="chint">Pick a page, edit its text. <b>Empty a field</b> to fall back to the built-in wording. Unsaved edits are marked ● per page.</span>
         </div>
+        <div class="pgtabs" id="pgTabs"></div>
         <div id="contentList"></div>
       </div>
     </div>

@@ -53,52 +53,96 @@
   });
 
   /* ============================================================
-     CONTENT EDITOR — site text from window.CMS_CATALOG
-     (js/content.js provides the catalog + DB values)
+     CONTENT EDITOR — page-wise sections from window.CMS_CATALOG
+     Pick a page chip → see only that page's fields. Edits are
+     kept across page switches; Save posts every dirty field.
    ============================================================ */
   const contentList = document.getElementById('contentList');
+  const pgTabs = document.getElementById('pgTabs');
   const saveContentBtn = document.getElementById('saveContentBtn');
-  const dirty = new Set();
+  const dirty = new Set();               /* keys with unsaved edits */
+  const fieldOf = {};                    /* key → { wrap, input, deflt } */
+  let pageOf = {};                       /* key → group name */
+  let curPage = null;
 
   function contentValue(k, deflt) {
     const v = (window.CMS_CONTENT || {})[k];
     return v === undefined ? deflt : v;
   }
-  function markDirty(k) { dirty.add(k); saveContentBtn.disabled = false; }
+  function paintSave() {
+    saveContentBtn.disabled = dirty.size === 0;
+    saveContentBtn.textContent = dirty.size ? `Save content (${dirty.size})` : 'Save content';
+  }
+  function paintChips() {
+    pgTabs.querySelectorAll('.pgtab').forEach(ch => {
+      ch.classList.toggle('has-dirty', [...dirty].some(k => pageOf[k] === ch.dataset.g));
+    });
+  }
 
   async function buildContent() {
     if (window.CMS_CONTENT_READY) await window.CMS_CONTENT_READY;
     contentList.innerHTML = '';
+    pgTabs.innerHTML = '';
+    dirty.clear();
+    for (const k in fieldOf) delete fieldOf[k];
+    pageOf = {};
+
     const groups = [...new Set(window.CMS_CATALOG.map(f => f.g))];
+    const sections = {};
+
+    /* page chips */
+    for (const g of groups) {
+      const ch = document.createElement('button');
+      ch.type = 'button';
+      ch.className = 'pgtab';
+      ch.dataset.g = g;
+      ch.textContent = g.toUpperCase();
+      ch.innerHTML += '<span class="nd"></span>';
+      ch.addEventListener('click', () => showPage(g));
+      pgTabs.appendChild(ch);
+    }
+
+    /* one section per page */
     for (const g of groups) {
       const sec = document.createElement('div');
       sec.className = 'group';
-      sec.innerHTML = `<h3>${g.toUpperCase()}</h3>`;
+      sec.hidden = true;
+      const n = window.CMS_CATALOG.filter(x => x.g === g).length;
+      sec.innerHTML = `<h3>${g.toUpperCase()} <span class="gcount">— ${n} fields</span></h3>`;
       const grid = document.createElement('div');
       grid.className = 'cgrid';
       for (const f of window.CMS_CATALOG.filter(x => x.g === g)) {
+        pageOf[f.k] = g;
         const wrap = document.createElement('div');
         wrap.className = 'cfield' + (f.rich || (f.d || '').length > 46 ? ' wide' : '');
         wrap.dataset.key = f.k;
-        const val = contentValue(f.k, f.d);
-        const tag = f.rich || (f.d || '').length > 46 ? 'textarea' : 'input';
         wrap.innerHTML = `<label>${f.label} <span style="opacity:.55">· ${f.k}</span></label>`;
-        const inp = document.createElement(tag);
-        inp.value = val;
+        const inp = document.createElement(f.rich || (f.d || '').length > 46 ? 'textarea' : 'input');
+        inp.value = contentValue(f.k, f.d);
         inp.placeholder = f.d || '';
         inp.addEventListener('input', () => {
           const cur = (window.CMS_CONTENT || {})[f.k] ?? f.d;
           if (inp.value === cur) { dirty.delete(f.k); wrap.classList.remove('dirty'); }
-          else { markDirty(f.k); wrap.classList.add('dirty'); }
-          saveContentBtn.disabled = dirty.size === 0;
+          else { dirty.add(f.k); wrap.classList.add('dirty'); }
+          paintSave(); paintChips();
         });
         wrap.appendChild(inp);
+        fieldOf[f.k] = { wrap, input: inp, deflt: f.d };
         grid.appendChild(wrap);
       }
       sec.appendChild(grid);
       contentList.appendChild(sec);
+      sections[g] = sec;
     }
-    saveContentBtn.disabled = dirty.size === 0;
+
+    function showPage(g) {
+      curPage = g;
+      pgTabs.querySelectorAll('.pgtab').forEach(ch => ch.classList.toggle('active', ch.dataset.g === g));
+      for (const name of groups) sections[name].hidden = name !== g;
+    }
+    buildContent.showPage = showPage;
+    showPage(groups.includes('Home') ? 'Home' : groups[0]);
+    paintSave(); paintChips();
   }
 
   saveContentBtn.addEventListener('click', async () => {
@@ -106,10 +150,7 @@
     saveContentBtn.disabled = true;
     saveContentBtn.textContent = 'Saving…';
     const updates = {};
-    for (const k of dirty) {
-      const wrap = contentList.querySelector(`[data-key="${k}"]`);
-      updates[k] = wrap.querySelector('input,textarea').value;
-    }
+    for (const k of dirty) updates[k] = fieldOf[k].input.value;
     try {
       const r = await fetch('/.netlify/functions/content', {
         method: 'POST',
@@ -120,16 +161,18 @@
       if (r.status === 401) { lock(); throw new Error('Password rejected — signed out.'); }
       if (!r.ok || !d.ok) throw new Error(d.error || 'Save failed.');
       Object.assign(window.CMS_CONTENT, updates);
-      dirty.clear();
-      document.querySelectorAll('.cfield.dirty').forEach(x => x.classList.remove('dirty'));
+      for (const k of Object.keys(updates)) {
+        dirty.delete(k);
+        fieldOf[k].wrap.classList.remove('dirty');
+      }
       say(`Saved ${d.saved} change${d.saved === 1 ? '' : 's'} — live on the site.`, 'ok');
     } catch (e) { say(e.message, 'bad'); }
-    saveContentBtn.textContent = 'Save content';
-    saveContentBtn.disabled = dirty.size === 0;
+    paintSave(); paintChips();
   });
   document.getElementById('reloadContentBtn').addEventListener('click', async () => {
     dirty.clear();
     await buildContent();
+    if (buildContent.showPage) buildContent.showPage(curPage || 'Home');
     say('Content reloaded.', 'ok');
   });
 
