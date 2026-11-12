@@ -63,6 +63,9 @@
     if (EDIT.scrubbing) { EDIT.scrubbing = false; EDIT.paused = !wasPlaying; updateState(); }
   });
   addEventListener('keydown', e => {
+    /* space pauses the timeline — but never while the user is typing
+       (contact form fields need their spaces) */
+    if (e.target.closest && e.target.closest('input, textarea, select, [contenteditable]')) return;
     if (e.code === 'Space') { e.preventDefault(); setPaused(!EDIT.paused); }
   });
 

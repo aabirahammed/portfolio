@@ -93,7 +93,7 @@ window.SFX = (function () {
   addEventListener('pointerup', e => {
     if (!tracking) return;
     tracking = false;
-    if (e.target && e.target.closest && e.target.closest('button')) return;
+    if (e.target && e.target.closest && e.target.closest('button, input, textarea, select')) return;
     const moved = Math.abs(e.clientX - dX) + Math.abs(e.clientY - dY);
     if (moved < 8 && performance.now() - dT < 600) api.click();
   }, true);
