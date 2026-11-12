@@ -30,6 +30,12 @@ Error page: `404.html` (auto-served by Netlify / GitHub Pages).
   ticks that follow the playhead, play/pause two-tone, menu slides. Speaker
   toggle lives in the nav; the choice persists in `localStorage` and
   `prefers-reduced-motion` users start muted.
+- **`js/contact.js`** — the "Let's talk" contact modal, injected on every
+  page. Submits to a Netlify function which emails via Resend; honeypot
+  spam trap, mailto fallback on failure. The Resend key lives in Netlify
+  env vars (`RESEND_API_KEY`), never in the repo.
+- **`netlify/functions/contact.js`** — serverless endpoint
+  (`/.netlify/functions/contact`) that validates and forwards inquiries.
 - **`js/*-scene.js`** — one Three.js scene per page. They dynamic-`import()`
   Three.js from the jsDelivr CDN, so the site runs straight from `file://`
   with no build step and no bundler.

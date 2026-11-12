@@ -115,6 +115,36 @@ and what it currently does.
 
 ---
 
+## CMS — `js/cms.js` + Supabase
+
+| Call name | Code | What it is / does |
+|---|---|---|
+| **CMS Connection** | `js/cms.js` | Supabase URL + publishable key, `CMS.projects()` fetcher |
+| **Projects Table** | Supabase → Table Editor → `projects` | Live source of the Work carousel — edit like a spreadsheet |
+| **Work Fallback** | `js/work-scene.js` built-in list | 8 hardcoded projects used if the fetch fails — site never breaks |
+
+| Column | Meaning |
+|---|---|
+| `title` | Card + caption headline |
+| `client` | First line of the caption meta |
+| `year` | Middle of the meta |
+| `meta` | Last of the meta ("Edit + Motion") |
+| `colors` | Two hex codes `{#ffb020,#ff6a3d}` — the frame artwork gradient |
+| `sort` | Order (lower = earlier; multiples of 10 recommended) |
+| `live` | `false` hides the row without deleting it |
+
+## CONTACT FORM — `js/contact.js` + `netlify/functions/contact.js`
+
+| Call name | Trigger | What it does |
+|---|---|---|
+| **Let's Talk Modal** | clicking `.nav-cta` | Contact form opens as a blurred overlay (JS intercepts the mailto link) |
+| **Contact Submit** | "Send message" | POSTs to `/.netlify/functions/contact` → Resend emails ahammedaabir@gmail.com |
+| **Honeypot** | hidden `website` field | Bots get a fake success; real visitors never see it |
+| **Contact Status** | under the button | Errors (with mailto fallback) / "Got it — reply within 24h" |
+| **RESEND_API_KEY** | Netlify env vars only | The secret — never in the repo, never in chat |
+
+---
+
 ## SOUND SYSTEM — `js/sound.js`
 
 | Call name | Trigger | Sound |
@@ -148,6 +178,9 @@ index.html  work.html  reel.html  about.html  services.html  404.html
 css/shared.css          ← everything above lives here (one design system)
 js/timeline.js          ← EDIT engine: timecode, playhead, scrub, Space, menu
 js/sound.js             ← all interaction sounds
+js/cms.js               ← Supabase connection (Work page live data)
+js/contact.js           ← "Let's talk" modal (injected on every page)
+netlify/functions/      ← serverless: contact form email (Resend)
 js/hero-scene.js        ← Home 3D + RPM counter + burst
 js/work-scene.js        ← Work carousel
 js/reel-scene.js        ← Reel cinema screen
