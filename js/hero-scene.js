@@ -467,6 +467,35 @@
   ============================================================ */
   if (window.CMS_CONTENT_READY) await window.CMS_CONTENT_READY;
   const C = window.CMS_CONTENT || {};
+
+  /* ============================================================
+     Ticker fill — the marquee scrolls by 50% of the track width,
+     so the loop is only seamless when one half is wider than the
+     viewport. Clone the word sequence (whole copies only) until
+     that's guaranteed on any screen, and scale the duration so
+     the scroll speed stays the same. Re-fill on resize/font load.
+  ============================================================ */
+  const track = document.querySelector('.ticker-track');
+  if (track && track.children.length) {
+    const base = Array.from(track.children);
+    function fillTicker() {
+      track.innerHTML = '';
+      base.forEach(n => track.appendChild(n.cloneNode(true)));
+      const unitW = track.scrollWidth;
+      if (!unitW) return;
+      let units = Math.ceil((2 * innerWidth) / unitW);
+      if (units % 2) units++;          /* whole copies per half — keeps -50% seamless */
+      units = Math.max(2, units);
+      for (let u = 1; u < units; u++) base.forEach(n => track.appendChild(n.cloneNode(true)));
+      /* 30s originally slid one copy (half the track); keep that speed */
+      track.style.animationDuration = (30 * (units / 2)).toFixed(2) + 's';
+    }
+    fillTicker();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fillTicker);
+    let rzT;
+    addEventListener('resize', () => { clearTimeout(rzT); rzT = setTimeout(fillTicker, 200); });
+  }
+
   function stat(s, dv, ds) {
     const m = String(s ?? '').trim().match(/^([\d.,]+)\s*(.*)$/);
     return m ? [parseFloat(m[1].replace(/,/g, '')) || dv, m[2] || ds] : [dv, ds];
