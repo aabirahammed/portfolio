@@ -16,6 +16,7 @@
       --a1:#ff3d81; --a2:#22d3ee; --ok:#a3e635; --bad:#ff3d5e;
     }
     *{margin:0;padding:0;box-sizing:border-box}
+    [hidden]{display:none !important}
     body{
       background:var(--bg); color:var(--ink);
       font-family:'Inter',sans-serif; min-height:100vh; padding:26px 20px 90px;
@@ -96,7 +97,7 @@
     .ghostnum{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);opacity:.7;margin-left:auto}
 
     /* ---------- top bar + pages grid ---------- */
-    .cbar{display:flex;align-items:center;gap:12px;margin:4px 0 20px;flex-wrap:wrap}
+    .cbar{display:flex;align-items:center;gap:12px;margin:4px 0 26px;flex-wrap:wrap}
     .crumb{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:9px;
       font-family:'Syne',sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;
       padding:8px 14px;cursor:pointer;transition:color .2s,border-color .2s}
