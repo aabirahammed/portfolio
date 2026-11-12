@@ -252,11 +252,15 @@
   }
 
   /* milestone beacons */
+  /* milestones — CMS values when present (js/content.js) */
+  if (window.CMS_CONTENT_READY) await window.CMS_CONTENT_READY;
+  const C = window.CMS_CONTENT || {};
+  const pick = (k, d) => (C[k] ? String(C[k]) : d);
   const milestones = [
-    { t: '2018 — FIRST CUT',    d: 'Pirated Premiere, a laptop that sounded like a jet engine, and one very patient friend.' },
-    { t: '2020 — STUDIO YEARS', d: 'Two years cutting ads and broadcast promos — where deadlines stopped being scary and started being fun.' },
-    { t: '2023 — FREELANCE',    d: 'Went solo. Titles, brand films and music visuals for studios and artists worldwide.' },
-    { t: '2026 — YOUR PROJECT', d: 'The next frame is still empty. This slot is reserved — let\'s fill it together.' },
+    { t: pick('about.m1t', '2018 — FIRST CUT'), d: pick('about.m1d', 'Pirated Premiere, a laptop that sounded like a jet engine, and one very patient friend.') },
+    { t: pick('about.m2t', '2020 — STUDIO YEARS'), d: pick('about.m2d', 'Two years cutting ads and broadcast promos — where deadlines stopped being scary and started being fun.') },
+    { t: pick('about.m3t', '2023 — FREELANCE'), d: pick('about.m3d', 'Went solo. Titles, brand films and music visuals for studios and artists worldwide.') },
+    { t: pick('about.m4t', '2026 — YOUR PROJECT'), d: pick('about.m4d', "The next frame is still empty. This slot is reserved — let's fill it together.") },
   ];
   const M = milestones.length;
   const beacons = [];

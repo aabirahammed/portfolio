@@ -354,10 +354,14 @@
   /* ============================================================
      Caption (DOM)
   ============================================================ */
+  /* scene captions — CMS values when present (js/content.js) */
+  if (window.CMS_CONTENT_READY) await window.CMS_CONTENT_READY;
+  const C = window.CMS_CONTENT || {};
+  const pick = (k, d) => (C[k] ? String(C[k]) : d);
   const sceneNames = [
-    ['IDENTITY', 'Kinetic type · 00:00 – 00:04'],
-    ['GRADE + BARS', 'Color & test pattern · 00:04 – 00:08'],
-    ['END CARD', 'Contact & credits · 00:08 – 00:12'],
+    [pick('reel.s1t', 'IDENTITY'),      pick('reel.s1m', 'Kinetic type · 00:00 – 00:04')],
+    [pick('reel.s2t', 'GRADE + BARS'),  pick('reel.s2m', 'Color & test pattern · 00:04 – 00:08')],
+    [pick('reel.s3t', 'END CARD'),      pick('reel.s3m', 'Contact & credits · 00:08 – 00:12')],
   ];
   const scIdx = document.getElementById('scIdx');
   const scTitle = document.getElementById('scTitle');

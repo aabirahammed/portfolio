@@ -95,6 +95,33 @@
     .mini.del.arm{color:var(--bad);border-color:var(--bad);background:rgba(255,61,94,.12)}
     .ghostnum{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);opacity:.7;margin-left:auto}
 
+    /* ---------- tabs + content editor ---------- */
+    .tabs{display:flex;gap:8px;margin:6px 0 18px}
+    .tab{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:9px;
+      font-family:'Syne',sans-serif;font-weight:700;font-size:11.5px;letter-spacing:.08em;
+      padding:9px 20px;cursor:pointer;transition:color .2s,border-color .2s,background .2s}
+    .tab.active{color:#0b0b12;background:linear-gradient(90deg,var(--a1),var(--a2));border-color:transparent}
+    .tab:not(.active):hover{color:var(--ink);border-color:var(--a2)}
+    .group{margin:26px 0 10px}
+    .group:first-child{margin-top:0}
+    .group h3{font-family:'Syne',sans-serif;font-weight:800;font-size:12px;letter-spacing:.16em;
+      color:var(--a2);display:flex;align-items:center;gap:10px}
+    .group h3::after{content:"";flex:1;height:1px;background:var(--line)}
+    .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-top:12px}
+    .cfield{display:flex;flex-direction:column;gap:4px}
+    .cfield.wide{grid-column:1/-1}
+    .cfield label{font-size:9.5px;letter-spacing:.13em;color:var(--muted);text-transform:uppercase}
+    .cfield input,.cfield textarea{
+      background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;
+      color:var(--ink);font-family:'Inter',sans-serif;font-size:13px;padding:8px 10px;
+      transition:border-color .2s;width:100%;resize:vertical}
+    .cfield textarea{min-height:64px}
+    .cfield input:focus,.cfield textarea:focus{outline:none;border-color:var(--a1)}
+    .cfield.dirty input,.cfield.dirty textarea{border-color:rgba(255,61,129,.55)}
+    .cbar{display:flex;align-items:center;gap:12px;margin:20px 0 16px}
+    .chint{font-size:11px;color:var(--muted);margin:8px 0 0}
+    .chint b{color:var(--a2);font-weight:600}
+
     /* ---------- toast ---------- */
     #toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,80px);
       background:var(--panel);border:1px solid var(--line);border-radius:10px;
@@ -131,17 +158,34 @@
     </div>
 
     <div id="app" hidden>
-      <div class="bar">
-        <button class="btn primary" id="addBtn" type="button">+ Add project</button>
-        <button class="btn" id="reloadBtn" type="button">↻ Reload</button>
-        <span class="ghostnum" id="count"></span>
+      <div class="tabs">
+        <button class="tab active" data-tab="projects" type="button">PROJECTS</button>
+        <button class="tab" data-tab="content" type="button">CONTENT</button>
       </div>
-      <div id="list"></div>
+
+      <div id="projView">
+        <div class="bar">
+          <button class="btn primary" id="addBtn" type="button">+ Add project</button>
+          <button class="btn" id="reloadBtn" type="button">↻ Reload</button>
+          <span class="ghostnum" id="count"></span>
+        </div>
+        <div id="list"></div>
+      </div>
+
+      <div id="contentView" hidden>
+        <div class="cbar">
+          <button class="btn primary" id="saveContentBtn" type="button" disabled>Save content</button>
+          <button class="btn" id="reloadContentBtn" type="button">↻ Reload</button>
+          <span class="chint">Site text for every page. <b>Empty a field</b> to fall back to the built-in wording.</span>
+        </div>
+        <div id="contentList"></div>
+      </div>
     </div>
 
   </div>
   <div id="toast"></div>
 
+  <script src="js/content.js" defer></script>
   <script src="js/admin.js" defer></script>
 </body>
 </html>

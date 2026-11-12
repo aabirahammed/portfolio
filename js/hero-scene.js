@@ -465,7 +465,17 @@
   /* ============================================================
      DOM garnish — stat count-up + rotating role
   ============================================================ */
-  const counters = [['n1', 200, '+'], ['n2', 40, 'M'], ['n3', 12, '']];
+  if (window.CMS_CONTENT_READY) await window.CMS_CONTENT_READY;
+  const C = window.CMS_CONTENT || {};
+  function stat(s, dv, ds) {
+    const m = String(s ?? '').trim().match(/^([\d.,]+)\s*(.*)$/);
+    return m ? [parseFloat(m[1].replace(/,/g, '')) || dv, m[2] || ds] : [dv, ds];
+  }
+  const counters = [
+    ['n1', ...stat(C['home.s1n'], 200, '+')],
+    ['n2', ...stat(C['home.s2n'], 40, 'M')],
+    ['n3', ...stat(C['home.s3n'], 12, '')],
+  ];
   setTimeout(() => {
     const t0 = performance.now();
     (function step() {
@@ -479,7 +489,10 @@
     })();
   }, 900);
 
-  const roles = ['motion designer', 'video editor', 'kinetic storyteller', 'colorist'];
+  const roles = String(C['home.roles'] || '').split(',').map(s => s.trim()).filter(Boolean);
+  if (!roles.length) roles.push('motion designer', 'video editor', 'kinetic storyteller', 'colorist');
+  const spin0 = document.getElementById('roleSpin');
+  if (spin0) spin0.textContent = roles[0];
   let ri = 0;
   setInterval(() => {
     const el = document.getElementById('roleSpin');

@@ -39,7 +39,103 @@
     return d;
   }
 
-  /* ---------- auth ---------- */
+  /* ============================================================
+     TABS — Projects / Content
+   ============================================================ */
+  const tabs = document.querySelectorAll('.tab');
+  const projView = document.getElementById('projView');
+  const contentView = document.getElementById('contentView');
+  for (const t of tabs) t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.toggle('active', x === t));
+    projView.hidden = t.dataset.tab !== 'projects';
+    contentView.hidden = t.dataset.tab !== 'content';
+    if (t.dataset.tab === 'content') buildContent();
+  });
+
+  /* ============================================================
+     CONTENT EDITOR — site text from window.CMS_CATALOG
+     (js/content.js provides the catalog + DB values)
+   ============================================================ */
+  const contentList = document.getElementById('contentList');
+  const saveContentBtn = document.getElementById('saveContentBtn');
+  const dirty = new Set();
+
+  function contentValue(k, deflt) {
+    const v = (window.CMS_CONTENT || {})[k];
+    return v === undefined ? deflt : v;
+  }
+  function markDirty(k) { dirty.add(k); saveContentBtn.disabled = false; }
+
+  async function buildContent() {
+    if (window.CMS_CONTENT_READY) await window.CMS_CONTENT_READY;
+    contentList.innerHTML = '';
+    const groups = [...new Set(window.CMS_CATALOG.map(f => f.g))];
+    for (const g of groups) {
+      const sec = document.createElement('div');
+      sec.className = 'group';
+      sec.innerHTML = `<h3>${g.toUpperCase()}</h3>`;
+      const grid = document.createElement('div');
+      grid.className = 'cgrid';
+      for (const f of window.CMS_CATALOG.filter(x => x.g === g)) {
+        const wrap = document.createElement('div');
+        wrap.className = 'cfield' + (f.rich || (f.d || '').length > 46 ? ' wide' : '');
+        wrap.dataset.key = f.k;
+        const val = contentValue(f.k, f.d);
+        const tag = f.rich || (f.d || '').length > 46 ? 'textarea' : 'input';
+        wrap.innerHTML = `<label>${f.label} <span style="opacity:.55">· ${f.k}</span></label>`;
+        const inp = document.createElement(tag);
+        inp.value = val;
+        inp.placeholder = f.d || '';
+        inp.addEventListener('input', () => {
+          const cur = (window.CMS_CONTENT || {})[f.k] ?? f.d;
+          if (inp.value === cur) { dirty.delete(f.k); wrap.classList.remove('dirty'); }
+          else { markDirty(f.k); wrap.classList.add('dirty'); }
+          saveContentBtn.disabled = dirty.size === 0;
+        });
+        wrap.appendChild(inp);
+        grid.appendChild(wrap);
+      }
+      sec.appendChild(grid);
+      contentList.appendChild(sec);
+    }
+    saveContentBtn.disabled = dirty.size === 0;
+  }
+
+  saveContentBtn.addEventListener('click', async () => {
+    if (!dirty.size) return;
+    saveContentBtn.disabled = true;
+    saveContentBtn.textContent = 'Saving…';
+    const updates = {};
+    for (const k of dirty) {
+      const wrap = contentList.querySelector(`[data-key="${k}"]`);
+      updates[k] = wrap.querySelector('input,textarea').value;
+    }
+    try {
+      const r = await fetch('/.netlify/functions/content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-pass': pass },
+        body: JSON.stringify({ updates }),
+      });
+      const d = await r.json().catch(() => ({}));
+      if (r.status === 401) { lock(); throw new Error('Password rejected — signed out.'); }
+      if (!r.ok || !d.ok) throw new Error(d.error || 'Save failed.');
+      Object.assign(window.CMS_CONTENT, updates);
+      dirty.clear();
+      document.querySelectorAll('.cfield.dirty').forEach(x => x.classList.remove('dirty'));
+      say(`Saved ${d.saved} change${d.saved === 1 ? '' : 's'} — live on the site.`, 'ok');
+    } catch (e) { say(e.message, 'bad'); }
+    saveContentBtn.textContent = 'Save content';
+    saveContentBtn.disabled = dirty.size === 0;
+  });
+  document.getElementById('reloadContentBtn').addEventListener('click', async () => {
+    dirty.clear();
+    await buildContent();
+    say('Content reloaded.', 'ok');
+  });
+
+  /* ============================================================
+     auth
+   ============================================================ */
   function lock() {
     sessionStorage.removeItem(KEY);
     pass = null;

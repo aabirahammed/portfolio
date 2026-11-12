@@ -53,11 +53,17 @@
   /* ============================================================
      Services + card artwork
   ============================================================ */
+  /* services — CMS values when present (js/content.js); deliverables
+     are comma-separated in the CMS, joined with · on the page */
+  if (window.CMS_CONTENT_READY) await window.CMS_CONTENT_READY;
+  const C = window.CMS_CONTENT || {};
+  const pick = (k, d) => (C[k] ? String(C[k]) : d);
+  const dels = (k, d) => pick(k, d).split(',').map(s => s.trim()).filter(Boolean);
   const services = [
-    { t: 'MOTION DESIGN', dels: ['Logo animation', 'Explainers', 'Lower thirds', 'Title sequences'], meta: 'From storyboard to final render' },
-    { t: 'VIDEO EDITING', dels: ['Story assembly', 'Pacing & rhythm', 'Multi-cam', 'Subtitles & captions'], meta: 'Narrative-first cuts' },
-    { t: 'COLOR GRADE',   dels: ['Look development', 'Shot matching', 'Skin tones', 'Delivery masters'],   meta: 'REC709 to HDR' },
-    { t: 'SOUND DESIGN',  dels: ['SFX & foley', 'Music selection', 'Mix & loudness', 'Final mastering'],    meta: 'The half you feel' },
+    { t: pick('sv.1t', 'MOTION DESIGN'), dels: dels('sv.1d', 'Logo animation, Explainers, Lower thirds, Title sequences'), meta: pick('sv.1m', 'From storyboard to final render') },
+    { t: pick('sv.2t', 'VIDEO EDITING'), dels: dels('sv.2d', 'Story assembly, Pacing & rhythm, Multi-cam, Subtitles & captions'), meta: pick('sv.2m', 'Narrative-first cuts') },
+    { t: pick('sv.3t', 'COLOR GRADE'),   dels: dels('sv.3d', 'Look development, Shot matching, Skin tones, Delivery masters'),   meta: pick('sv.3m', 'REC709 to HDR') },
+    { t: pick('sv.4t', 'SOUND DESIGN'),  dels: dels('sv.4d', 'SFX & foley, Music selection, Mix & loudness, Final mastering'),    meta: pick('sv.4m', 'The half you feel') },
   ];
   const N = services.length, STEP = Math.PI / 2; // helix: cards opposite each other
   const R = 2.15, HELIX_Y = 0.85;
