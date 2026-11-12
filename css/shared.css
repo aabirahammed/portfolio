@@ -429,7 +429,7 @@ h1{
 @media (max-width:480px){
   nav{padding:16px 14px;gap:8px}
   .logo{font-size:12px}
-  .logo > span{display:none}   /* drop the (R) — saves 29px, nav fits 390px */
+  .logo > .reg{display:none}   /* drop the (R) — saves 29px, nav fits 390px */
   .nav-cta{font-size:11px;padding:6px 10px}
   .sfx-btn{width:26px;height:26px}
   .sfx-btn svg{width:11px;height:11px}

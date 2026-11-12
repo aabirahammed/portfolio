@@ -16,6 +16,8 @@
      rich values may contain limited inline markup (<strong>, <em>, <br>) */
   window.CMS_CATALOG = [
     /* GLOBAL */
+    { k: 'global.logo_text', page: 'Global', sec: 'Logo', label: 'Wordmark text', hint: 'shown on every page', d: 'AABIR\u00a0AHAMMED' },
+    { k: 'global.logo_reg',  page: 'Global', sec: 'Logo', label: 'Mark after wordmark', hint: 'hidden on phones', d: '\u00ae' },
     { k: 'global.cta',   page: 'Global', sec: 'Shared elements', label: 'Nav button text', d: "Let's talk" },
     { k: 'global.email', page: 'Global', sec: 'Shared elements', label: 'Contact email', d: 'ahammedaabir@gmail.com' },
     /* HOME */

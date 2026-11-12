@@ -25,7 +25,7 @@
   const toast = document.getElementById('toast');
 
   const PAGES = [
-    { name: 'Global',   desc: 'Nav button + contact email, shared by every page' },
+    { name: 'Global',   desc: 'Logo wordmark, nav button and contact email, shared by every page' },
     { name: 'Home',     desc: 'Hero, roles, stats row and the ticker marquee' },
     { name: 'Work',     desc: 'Hero + the 3D project carousel editor' },
     { name: 'Reel',     desc: 'Hero, loop badge and the scene captions' },
