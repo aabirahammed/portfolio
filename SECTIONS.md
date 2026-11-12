@@ -122,6 +122,8 @@ and what it currently does.
 | **CMS Connection** | `js/cms.js` | Supabase URL + publishable key, `CMS.projects()` fetcher |
 | **Projects Table** | Supabase → Table Editor → `projects` | Live source of the Work carousel — edit like a spreadsheet |
 | **Work Fallback** | `js/work-scene.js` built-in list | 8 hardcoded projects used if the fetch fails — site never breaks |
+| **Admin Page** | `admin.html`, `js/admin.js` | Password-protected editor at `/admin` — edit/reorder/add/delete/hide projects without the Supabase dashboard |
+| **Projects Function** | `netlify/functions/projects.js` | Write endpoint for /admin; guarded by `ADMIN_PASS`, uses `SUPABASE_SERVICE_KEY` (both Netlify env secrets) |
 
 | Column | Meaning |
 |---|---|
@@ -180,7 +182,8 @@ js/timeline.js          ← EDIT engine: timecode, playhead, scrub, Space, menu
 js/sound.js             ← all interaction sounds
 js/cms.js               ← Supabase connection (Work page live data)
 js/contact.js           ← "Let's talk" modal (injected on every page)
-netlify/functions/      ← serverless: contact form email (Resend)
+netlify/functions/      ← serverless: contact email (Resend) + CMS writes
+admin.html  js/admin.js ← password-protected CMS editor at /admin
 js/hero-scene.js        ← Home 3D + RPM counter + burst
 js/work-scene.js        ← Work carousel
 js/reel-scene.js        ← Reel cinema screen

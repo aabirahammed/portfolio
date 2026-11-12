@@ -36,6 +36,11 @@ Error page: `404.html` (auto-served by Netlify / GitHub Pages).
   env vars (`RESEND_API_KEY`), never in the repo.
 - **`netlify/functions/contact.js`** — serverless endpoint
   (`/.netlify/functions/contact`) that validates and forwards inquiries.
+- **`admin.html` + `js/admin.js`** — password-protected CMS at `/admin`
+  (marked noindex). Edits the `projects` table through
+  `netlify/functions/projects.js`, which authenticates with the
+  `ADMIN_PASS` env var and writes with `SUPABASE_SERVICE_KEY` — both
+  Netlify secrets, never in the repo.
 - **`js/*-scene.js`** — one Three.js scene per page. They dynamic-`import()`
   Three.js from the jsDelivr CDN, so the site runs straight from `file://`
   with no build step and no bundler.
